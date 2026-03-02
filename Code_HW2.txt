@@ -1,0 +1,15 @@
+Part IV scripts were implemented in Node.js as client.js and run locally (not on the VMs).
+
+Run command:
+IP_A=http://34.10.132.184:8080 IP_B=http://104.155.109.101:8080 node client.js
+
+IV-A Latency measurement:
+- Sends 10 POST requests to /register on instance A and instance B, measuring end-to-end request time using performance.now().
+- Sends 10 GET requests to /list on instance A and instance B, measuring end-to-end request time.
+- Reports average latency (ms) for each endpoint on each instance.
+
+IV-B Eventual consistency measurement:
+- Loops 100 iterations.
+- Each iteration generates a unique username, registers it on instance A (/register), then immediately queries instance B (/list).
+- Counts how many times the newly registered username is not present in instance B’s /list response.
+- Reports misses out of 100.

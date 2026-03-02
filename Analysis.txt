@@ -1,0 +1,13 @@
+IV-A Average Latency Results
+A (us-central1) /register avg: 93.35 ms
+B (europe-west1) /register avg: 443.83 ms
+A (us-central1) /list avg: 73.08 ms
+B (europe-west1) /list avg: 352.29 ms
+
+IV-B Eventual Consistency Results
+Misses: 0 / 100
+
+Discussion
+The europe-west1 instance shows significantly higher latency than the us-central1 instance because my client machine is located in the US, so requests to europe-west1 travel a longer network path and experience higher RTT due to geographic distance and routing. The /register endpoint is also slower than /list because it performs a write to Firestore/Datastore, which involves additional backend processing and replication work compared to a read query.
+
+In the eventual consistency experiment, there were 0 misses out of 100 when writing in us-central1 and immediately reading from europe-west1. This suggests that in my runs the replication delay was small enough that the write had already propagated by the time the read completed. Even though the system is eventually consistent, the lag can often be milliseconds and may not be observable at this scale; misses would be more likely under heavier load, tighter timing, or different network conditions.
